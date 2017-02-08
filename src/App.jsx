@@ -22,23 +22,32 @@ var people = {
 }
 
 class App extends Component {
-
   constructor(props) {
-
     super(props);
     this.state = people;
-
-
-
-    // this.updateName = (newPeople) => {
-    //   this.setState({person: newPeople});
-    // }
-    // this.updateMessages = (newMessages) => {
-    //   this.setState({messages: newMessages});
-    // }
   }
 
-  componentDidMount() {
+componentDidMount() {
+  const connectSocket = new WebSocket('ws://localhost:4000');
+  connectSocket.addEventListener('open', function(event){
+    console.log("Server Connected")
+
+    function sendMessage(){
+
+      var msg = {
+        type: "message",
+        username: "Bob",
+        content: "I am bob"
+      }
+
+      connectSocket.send(JSON.stringify(msg));
+
+    }
+    sendMessage();
+
+  })
+
+
   console.log("componentDidMount <App />");
   setTimeout(() => {
     console.log("Simulating incoming message");
@@ -48,17 +57,13 @@ class App extends Component {
     // Update the state of the app component.
     // Calling setState will trigger a call to render() in App and all child components.
     this.setState({messages: messages})
-
-
-  }, 3000);
+    }, 3000);
 }
-  // componentDidMount() {
-  //   this.updateName(people.currentUser.name)
-  //   this.updateMessages(people.messages[0].content)
-  // }
+
+
 
 post = (event) => {
-    const newMessage = {id: this.state.messages.length + 1, username: "Bob", content: event.target.value};
+    const newMessage = {id: this.state.messages.length + 1, username: this.state.messages[0].username, content: event.target.value};
     const messages = this.state.messages.concat(newMessage);
     this.setState({messages: messages})
 
