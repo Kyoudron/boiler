@@ -3,10 +3,19 @@ import React, {Component} from 'react';
 class MessageList extends Component {
   render() {
     return (
-    <div class="message">
-      <span class="username">Anonymous1</span>
-      <span class="content"> I wont be impressed with technology until I can download food.</span>
-    </div>
+      <div id="message-list">
+      {this.props.messages.map(function(message){
+        return <div className="message" key={message.id}>
+
+          <span className="username"> {message.username} </span>
+          <span className="content"> {message.content} </span>
+
+        </div>
+      })}
+
+      </div>
+
+
     );
   }
 }
