@@ -3,7 +3,8 @@ import React, {Component} from 'react';
 class Message extends Component {
   render() {
     return (
-      <div class="message system">
+      <div className="messagesystem">
+        Anonymous1 changed their name to nomnom.
       </div>
     );
   }

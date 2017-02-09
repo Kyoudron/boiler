@@ -1,7 +1,8 @@
 // server.js
 
 const express = require('express');
-const SocketServer = require('ws').Server;
+const WebSocket = require('ws');
+const uuid = require('node-uuid');
 
 // Set the port to 4000
 const PORT = 4000;
@@ -13,17 +14,38 @@ const server = express()
   .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
 
 // Create the WebSockets server
-const wss = new SocketServer({ server });
+const wss = new WebSocket.Server({ server });
 
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
+
+wss.broadcast = function (data) {
+  wss.clients.forEach(function each(client){
+    if(client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(data));
+    }
+  });
+};
+
+
+
 wss.on('connection', (ws) => {
   console.log('Client connected');
+  // ws.send(JSON.stringify(messages))
 
-  ws.on('message', (message) => {
-    let action = JSON.parse(message)
-    console.log(action.username, action.content)
+
+  ws.on('message', (messages) => {
+    let parsedMsg = JSON.parse(messages)
+    console.log(parsedMsg)
+    let messageToClient = {
+      uuid: uuid.v4(),
+      username: parsedMsg.username,
+      content: parsedMsg.content
+    }
+    // messages = [messages, messageToClient]
+    wss.broadcast(messageToClient);
+
   })
 // send all messages to the other person
 
