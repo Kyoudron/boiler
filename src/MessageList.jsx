@@ -13,7 +13,7 @@ class MessageList extends Component {
           <span className="username"> {message.username} </span>
           <span className="content"> {message.content} </span>
           <span className="notification"> {message.nameChange} </span>
-
+          <div className="push"></div>
         </div>
       })}
 

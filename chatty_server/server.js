@@ -35,7 +35,6 @@ wss.on('connection', (ws) => {
 
   numUsers += 1;
 
-  console.log(37, wss.clients.size, numUsers)
 
   wss.broadcast({type: "userConnected", numUsers: numUsers})
 

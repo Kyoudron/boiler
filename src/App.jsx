@@ -38,7 +38,7 @@ componentDidMount() {
       case "incomingNotification":
         let notice = {
           type: "notification",
-          nameChange: `${data.oldUser} has changed their name to ${data.newUser}`
+          nameChange: `"${data.oldUser}" has changed their name to "${data.newUser}"`
         }
         let allNotices = that.state.messages.concat(notice);
         that.setState({messages: allNotices})
@@ -81,12 +81,12 @@ post = (event) => {
     return (
       <div>
         <nav>
-          <h1>Stupid Chat App</h1>
+          <h1>Chatty</h1>
           <h4> {this.state.usersOnline} users connected </h4>
         </nav>
 
           <MessageList messages={this.state.messages} notification={this.state.notification} />
-          <Message  />
+
           <ChatBar diffUser={this.new_name} postMessage={this.post} />
       </div>
     );
