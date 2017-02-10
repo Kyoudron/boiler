@@ -4,7 +4,6 @@ class Message extends Component {
   render() {
     return (
       <div className="messagesystem">
-        Anonymous1 changed their name to nomnom.
       </div>
     );
   }
