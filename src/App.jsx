@@ -12,7 +12,7 @@ class App extends Component {
       usersOnline: 0,
       notification: [],
       messages: [],
-      userColour: '#a50000'
+      userColour: ''
 
     };
     this.post = this.post.bind(this)
@@ -35,6 +35,7 @@ componentDidMount() {
           content: data.content,
           userColour: data.userColour
         }
+        console.log(data.userColour)
         var allMessages = that.state.messages.concat(sendMessage);
         that.setState({messages: allMessages});
         break;
@@ -48,7 +49,7 @@ componentDidMount() {
         break;
       case "initialColour":
         that.setState({userColour: data.userColour});
-        console.log(userColour)
+
         break;
     }
   }
@@ -78,6 +79,7 @@ post = (event) => {
                       content: event.target.value,
                       userColour: this.state.userColour
                       };
+                      // console.log(this.state.userColour)
     this.connectSocket.send(JSON.stringify(postMessage));
 }
 

@@ -40,9 +40,7 @@ wss.on('connection', (ws) => {
 
   console.log('Client connected');
 
-let getInitialColour = {type: 'initialColour', userColour: randomColour()};
-  ws.send(JSON.stringify(getInitialColour));
-  // console.log(getInitialColour)
+  wss.broadcast({type: "initialColour", userColour: randomColour()});
 
   numUsers += 1;
 

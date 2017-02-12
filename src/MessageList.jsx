@@ -7,11 +7,11 @@ class MessageList extends Component {
     return (
       <div id="message-list">
 
-      {this.props.messages.map(function(message){
-        return <div className="message" key={message.id}>
-          <span className="username" style={{userColour: message.userColour}} > {message.username} </span>
-          <span className="content"> {message.content} </span>
-          <span className="notification"> {message.nameChange} </span>
+      {this.props.messages.map(function(post){
+        return <div className="message">
+          <span className="username" style = {{userColour: post.userColour}} > {post.username} </span>
+          <span className="content"> {post.content} </span>
+          <span className="notification"> {post.nameChange} </span>
           <div className="push"></div>
         </div>
       })}
