@@ -28,10 +28,21 @@ wss.broadcast = function (data) {
   });
 };
 
+
+randomColour = () => {
+  let colourSelect = ['#010777', '#a50000', '#186b00', '#f24fd9', '#ef8f00', '#009aa5', '#71a500'];
+  return colourSelect[Math.floor(Math.random() * 6) + 1];
+}
+
 let numUsers = 0;
 
 wss.on('connection', (ws) => {
+
   console.log('Client connected');
+
+let getInitialColour = {type: 'initialColour', userColour: randomColour()};
+  ws.send(JSON.stringify(getInitialColour));
+  // console.log(getInitialColour)
 
   numUsers += 1;
 
@@ -50,8 +61,10 @@ wss.on('connection', (ws) => {
           type: "incomingMessage",
           uuid: uuid.v4(),
           username: parsedMsg.username,
-          content: parsedMsg.content
+          content: parsedMsg.content,
+          userColour: parsedMsg.userColour
         }
+        // console.log(parsedMsg.userColour)
         wss.broadcast(messageToClient);
         break;
 

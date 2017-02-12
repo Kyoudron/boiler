@@ -11,7 +11,9 @@ class App extends Component {
       currentUser: {name: "Anonymous"},
       usersOnline: 0,
       notification: [],
-      messages: [] // messages coming from the server will be stored here as they arrive
+      messages: [],
+      userColour: '#a50000'
+
     };
     this.post = this.post.bind(this)
   }
@@ -30,7 +32,8 @@ componentDidMount() {
         let sendMessage = {
           type: "message",
           username: data.username,
-          content: data.content
+          content: data.content,
+          userColour: data.userColour
         }
         var allMessages = that.state.messages.concat(sendMessage);
         that.setState({messages: allMessages});
@@ -43,9 +46,11 @@ componentDidMount() {
         let allNotices = that.state.messages.concat(notice);
         that.setState({messages: allNotices})
         break;
-
+      case "initialColour":
+        that.setState({userColour: data.userColour});
+        console.log(userColour)
+        break;
     }
-        console.log(that.state.messages)
   }
 }
 
@@ -70,9 +75,9 @@ post = (event) => {
   const postMessage = {
                       type: "postMessage",
                       username: this.state.currentUser.name,
-                      content: event.target.value
+                      content: event.target.value,
+                      userColour: this.state.userColour
                       };
-
     this.connectSocket.send(JSON.stringify(postMessage));
 }
 
