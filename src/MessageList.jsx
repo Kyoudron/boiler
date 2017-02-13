@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-
 class MessageList extends Component {
   render() {
 
@@ -8,8 +7,9 @@ class MessageList extends Component {
       <div id="message-list">
 
       {this.props.messages.map(function(post){
+        let divStyle = {color: post.userColour};
         return <div className="message">
-          <span className="username" style = {{userColour: post.userColour}} > {post.username} </span>
+          <span className="username"  style={divStyle} > {post.username} </span>
           <span className="content"> {post.content} </span>
           <span className="notification"> {post.nameChange} </span>
           <div className="push"></div>

@@ -40,7 +40,9 @@ wss.on('connection', (ws) => {
 
   console.log('Client connected');
 
-  wss.broadcast({type: "initialColour", userColour: randomColour()});
+let sendColour = {type: "initialColour", userColour: randomColour()}
+
+  ws.send(JSON.stringify(sendColour))
 
   numUsers += 1;
 
@@ -52,7 +54,6 @@ wss.on('connection', (ws) => {
 
   ws.on('message', (messages) => {
     let parsedMsg = JSON.parse(messages)
-
     switch(parsedMsg.type) {
       case "postMessage":
         let messageToClient = {
@@ -62,7 +63,6 @@ wss.on('connection', (ws) => {
           content: parsedMsg.content,
           userColour: parsedMsg.userColour
         }
-        // console.log(parsedMsg.userColour)
         wss.broadcast(messageToClient);
         break;
 

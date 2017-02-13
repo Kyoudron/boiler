@@ -49,7 +49,6 @@ componentDidMount() {
         break;
       case "initialColour":
         that.setState({userColour: data.userColour});
-
         break;
     }
   }
@@ -79,7 +78,7 @@ post = (event) => {
                       content: event.target.value,
                       userColour: this.state.userColour
                       };
-                      // console.log(this.state.userColour)
+
     this.connectSocket.send(JSON.stringify(postMessage));
 }
 
