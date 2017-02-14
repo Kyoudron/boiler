@@ -12,75 +12,73 @@ class App extends Component {
       usersOnline: 0,
       notification: [],
       messages: [],
-      userColour: ''
+      userColor: ''
 
     };
     this.post = this.post.bind(this)
   }
 
 
-componentDidMount() {
-  this.connectSocket = new WebSocket('ws://localhost:4000');
-  var that = this
-  this.connectSocket.onmessage = function (event) {
-    let data = JSON.parse(event.data)
-    switch(data.type) {
-      case "userConnected":
-        that.setState({usersOnline: data.numUsers});
-        break;
-      case "incomingMessage":
-        let sendMessage = {
-          type: "message",
-          username: data.username,
-          content: data.content,
-          userColour: data.userColour
-        }
-        console.log(data.userColour)
-        var allMessages = that.state.messages.concat(sendMessage);
-        that.setState({messages: allMessages});
-        break;
-      case "incomingNotification":
-        let notice = {
-          type: "notification",
-          nameChange: `"${data.oldUser}" has changed their name to "${data.newUser}"`
-        }
-        let allNotices = that.state.messages.concat(notice);
-        that.setState({messages: allNotices})
-        break;
-      case "initialColour":
-        that.setState({userColour: data.userColour});
-        break;
+  componentDidMount() {
+    this.connectSocket = new WebSocket('ws://localhost:4000');
+    var that = this
+    this.connectSocket.onmessage = function (event) {
+      let data = JSON.parse(event.data)
+      switch(data.type) {
+        case "userConnected":
+          that.setState({usersOnline: data.numUsers});
+          break;
+        case "incomingMessage":
+          let sendMessage = {
+            type: "message",
+            username: data.username,
+            content: data.content,
+            userColor: data.userColor
+          }
+          console.log(data.userColor)
+          var allMessages = that.state.messages.concat(sendMessage);
+          that.setState({messages: allMessages});
+          break;
+        case "incomingNotification":
+          let notice = {
+            type: "notification",
+            nameChange: `"${data.oldUser}" has changed their name to "${data.newUser}"`
+          }
+          let allNotices = that.state.messages.concat(notice);
+          that.setState({messages: allNotices})
+          break;
+        case "initialColor":
+          that.setState({userColor: data.userColor});
+          break;
+      }
     }
   }
-}
 
 
-new_name = (event) => {
+  new_name = (name) => {
 
-  var oldUser = this.state.currentUser.name
-  this.setState({
-    currentUser: {name: event.target.value}
-  })
-  const userChange = {
-                    type: "postNotification",
-                    oldUsername: oldUser,
-                    username: event.target.value
-                     };
-                    console.log(userChange)
-  this.connectSocket.send(JSON.stringify(userChange))
-}
+    var oldUser = this.state.currentUser.name
+    this.setState({
+      currentUser: {name: name}
+    })
+    const userChange = {
+      type: "postNotification",
+      oldUsername: oldUser,
+      username: name
+    };
+    this.connectSocket.send(JSON.stringify(userChange))
+  }
 
 
-post = (event) => {
-  const postMessage = {
-                      type: "postMessage",
-                      username: this.state.currentUser.name,
-                      content: event.target.value,
-                      userColour: this.state.userColour
-                      };
-
+  post = (event) => {
+    const postMessage = {
+      type: "postMessage",
+      username: this.state.currentUser.name,
+      content: event.target.value,
+      userColor: this.state.userColor
+    };
     this.connectSocket.send(JSON.stringify(postMessage));
-}
+  }
 
   render() {
 
@@ -90,13 +88,12 @@ post = (event) => {
           <h1>Chatty</h1>
           <h4> {this.state.usersOnline} users connected </h4>
         </nav>
-
-          <MessageList messages={this.state.messages} notification={this.state.notification} />
-
-          <ChatBar diffUser={this.new_name} postMessage={this.post} />
+          <MessageList content={this.state.messages} />
+          <ChatBar changeUsername={this.new_name} postMessage={this.post} />
       </div>
     );
-    }
   }
+
+}
 
 export default App;

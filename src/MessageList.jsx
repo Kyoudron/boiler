@@ -1,23 +1,28 @@
 import React, {Component} from 'react';
+import Message from './Message.jsx';
+import Notification from './Notification.jsx';
 
 class MessageList extends Component {
   render() {
 
+    const msgArray = this.props.content;
+
     return (
       <div id="message-list">
-
-      {this.props.messages.map(function(post){
-        let divStyle = {color: post.userColour};
-        return <div className="message">
-          <span className="username"  style={divStyle} > {post.username} </span>
-          <span className="content"> {post.content} </span>
-          <span className="notification"> {post.nameChange} </span>
-          <div className="push"></div>
-        </div>
-      })}
-
+        {
+          msgArray.map((msg) => {
+            if (msg.type === 'message') {
+              return (
+                <Message key={msg.uuid} name={msg.username} message={msg.content} color={msg.userColor}/>
+              );
+            } else {
+              return (
+                <Notification key={msg.uuid} notice={msg.nameChange} />
+              );
+            }
+          })
+        }
       </div>
-
     );
   }
 }

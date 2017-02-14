@@ -29,9 +29,9 @@ wss.broadcast = function (data) {
 };
 
 
-randomColour = () => {
-  let colourSelect = ['#010777', '#a50000', '#186b00', '#f24fd9', '#ef8f00', '#009aa5', '#71a500'];
-  return colourSelect[Math.floor(Math.random() * 6) + 1];
+randomColor = () => {
+  let colorSelect = ['#010777', '#a50000', '#186b00', '#f24fd9', '#ef8f00', '#009aa5', '#71a500'];
+  return colorSelect[Math.floor(Math.random() * 6) + 1];
 }
 
 let numUsers = 0;
@@ -40,17 +40,13 @@ wss.on('connection', (ws) => {
 
   console.log('Client connected');
 
-let sendColour = {type: "initialColour", userColour: randomColour()}
-
-  ws.send(JSON.stringify(sendColour))
+  let sendColor = {type: "initialColor", userColor: randomColor()}
+  ws.send(JSON.stringify(sendColor))
 
   numUsers += 1;
 
 
   wss.broadcast({type: "userConnected", numUsers: numUsers})
-
-
-
 
   ws.on('message', (messages) => {
     let parsedMsg = JSON.parse(messages)
@@ -61,7 +57,7 @@ let sendColour = {type: "initialColour", userColour: randomColour()}
           uuid: uuid.v4(),
           username: parsedMsg.username,
           content: parsedMsg.content,
-          userColour: parsedMsg.userColour
+          userColor: parsedMsg.userColor
         }
         wss.broadcast(messageToClient);
         break;
@@ -69,6 +65,7 @@ let sendColour = {type: "initialColour", userColour: randomColour()}
       case "postNotification":
         let clientNotification = {
           type: "incomingNotification",
+          uuid: uuid.v4(),
           oldUser: parsedMsg.oldUsername,
           newUser: parsedMsg.username
         }

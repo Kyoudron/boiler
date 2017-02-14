@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
 
-
 class Notification extends Component {
-
   render() {
     return (
-      <div> {this.props.notification} </div>
-
+      <div className="notification" >
+        {this.props.notice}
+      </div>
     );
-  };
+  }
 }
-
 export default Notification;
