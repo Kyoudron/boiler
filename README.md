@@ -1,8 +1,11 @@
 Kapish's Chat app.
 
 Run two instances of terminal.
+
 One cd into /boiler
+
 One cd into the /boiler/chatty_server
+
 run npm start on both
 
 
